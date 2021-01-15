@@ -1,0 +1,175 @@
+---------------------------------- Lists as Stacks and Queues - Exercise ----------------------------------
+
+https://judge.softuni.bg/Contests/Compete/Index/1831#0
+
+
+
+                # 01. Reverse Numbers with a Stack
+
+stack = input().split()
+result = ""
+while stack:
+    result += stack.pop() + " "
+result = result.rstrip()
+print(result)
+
+
+
+
+                # 02. Maximum and Minimum Element
+
+cycles = int(input())
+stack = []
+
+def remove_el(stack):
+    if len(stack) == 0:
+        pass
+    else:
+        stack.pop()
+
+
+for cycle in range(1,cycles+1):
+    data = input()
+    if data.startswith("1"):
+        command, element = data.split()
+        element = int(element)
+        stack.append(element)
+
+    elif data == "2":
+        remove_el(stack)
+    elif data == "3":
+        if len(stack) == 0:
+            continue
+        else:
+            print(max(stack))
+    elif data == "4":
+        if len(stack) == 0:
+            continue
+        else:
+            print(min(stack))
+
+stack.reverse()
+result = ', '.join(str(ele) for ele in stack)
+print(result)
+
+
+
+------------------------ # 03. Fast Food ------------------------
+
+from collections import deque
+total_food = int(input())
+orders_input = [int(ele) for ele in input().split()]
+orders = deque(orders_input)
+print(max(orders))
+total = sum(orders)
+
+if total_food >= total:
+    print("Orders complete")
+else:
+    while True:
+        if total_food <= orders[0]:
+            break
+        else:
+            total_food -= orders.popleft()
+    result = " ".join([str(ele) for ele in orders])
+    print(f"Orders left: {result}")
+
+
+
+
+# ------------------------ 04. Fashion Boutique ------------------------
+
+clothes = [int(ele) for ele in input().split()]
+capacity = int(input())
+counter = 0
+remainder = 0
+print(clothes)
+current_capacity = capacity
+
+
+
+while len(clothes)>0:
+    garment = clothes.pop()
+    if garment + remainder <= current_capacity:
+        current_capacity -= garment
+    else:
+        counter += 1
+        remainder = garment
+
+print(counter)
+
+
+
+#------------------------ 05. Truck Tour ------------------------
+count_stations = int(input())
+stations = {}
+
+# Get stations dictionary - station index: [fuel, distance]
+for i in range(count_stations):
+    gas, distance = input().split()
+    gas = int(gas)
+    distance = int(distance)
+    stations[i] = [gas, distance]
+#print(f"Stations: {stations}")
+start_index = []
+
+for key,value in stations.items():
+    if value[0] >= value[1]:
+        start_index.append(key)
+#print(f"Possible start positions: {start_index}")
+keys_index = [key for key in stations.keys()]
+remove_index = []
+for ele in start_index:
+    iterator = list(keys_index[ele:] + keys_index[:ele])
+    # only need to reach the last station, removing it from iterator
+    iterator.pop()
+    #print(f"List of stations without the last station: {iterator}")
+    tank = 0
+    for gas_station in iterator:
+        start_fuel = stations[gas_station][0]
+        tank += start_fuel
+        #print(f"Current fuel: {tank} for station {ele}")
+        necessary_fuel = stations[gas_station][1]
+        #print(f"Distance to station {ele + 1}: {necessary_fuel}")
+
+        if tank < necessary_fuel:
+            remove_index.append(ele)
+        tank -= necessary_fuel
+remove_index = set(remove_index)
+match_list = [ele for ele in remove_index]
+final_list = [ele for ele in start_index if ele not in match_list]
+print(min(final_list))
+
+
+
+
+                # 06. Balanced Parentheses
+
+from collections import deque
+par_list = [ele for ele in input()]
+par_dic = {"{": "}", "(": ")", "[": "]"}
+indeces = []
+
+for i in range(len(par_list)):
+    if par_list[i] in "{[(" and par_list[i+1] == par_dic[par_list[i]]:
+        indeces.append(i)
+        indeces.append(i+1)
+
+result_list = [i for j, i in enumerate(par_list) if j not in indeces]
+work = deque(result_list)
+length = 0
+
+if len(par_list) % 2 != 0:
+    print("NO")
+else:
+    while len(work) > 0:
+        leftside = work.popleft()
+        rightside = work.pop()
+        if leftside in par_dic.keys() and rightside == par_dic[leftside]:
+            length += 1
+        else:
+            print(f"NO")
+            break
+
+if length == len(result_list)//2:
+    print("YES")
