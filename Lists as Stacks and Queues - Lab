@@ -1,0 +1,106 @@
+#---------------------------------- Lists as Stacks and Queues - Lab ----------------------------------
+# https://judge.softuni.bg/Contests/Practice/Index/1830#0
+
+
+                # 01. Reverse Strings
+
+data = input()
+stack = []
+for ele in data:
+    stack.append(ele)
+result = ""
+while stack:
+    result += stack.pop()
+
+print(result)
+
+
+
+                # 02. Matching Brackets
+
+data = input()
+stack = []
+
+for i in range(len(data)):
+    char = data[i]
+    if char == "(":
+        stack.append(i)
+    elif char == ")":
+        j = stack.pop()
+        print(data[j:i+1])
+
+
+
+                # 03. Supermarket
+
+from collections import deque
+END_COMMAND = "End"
+PAID_COMMAND = "Paid"
+names_queue = deque()
+while True:
+    data = input()
+    if data == END_COMMAND:
+        print(f"{len(names_queue)} people remaining.")
+        break
+    elif data == PAID_COMMAND:
+        while names_queue:
+            print(names_queue.popleft())
+    else:
+        names_queue.append(data)
+
+
+
+
+                # 04. Water Dispenser
+
+from collections import deque
+
+START_COMMAND = "Start"
+END_COMMAND = "End"
+
+total = int(input())
+people = deque()
+
+while True:
+    data = input()
+    if data == START_COMMAND:
+        break
+    else:
+        people.append(data)
+
+while True:
+    data = input()
+    if data == END_COMMAND:
+        print(f"{total} liters left")
+        break
+    else:
+        if "refill" in data:
+            command, refill = data.split()
+            refill = int(refill)
+            total += refill
+        else:
+            data = int(data)
+            person = people.popleft()
+            if total >= data:
+                print(f"{person} got water")
+                total -= data
+            else:
+                print(f"{person} must wait")
+
+
+
+
+                # 05. Hot potato
+
+from collections import deque
+peeps = input().split()
+children = deque(peeps)
+hops = int(input())
+
+
+while len(children) >1:
+    for i in range(hops-1):
+        children.append(children.popleft())
+    print(f"Removed {children.popleft()}")
+
+print(f"Last is {children.popleft()}")
