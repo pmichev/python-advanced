@@ -1,0 +1,151 @@
+---------------------------------- Tuples and Sets - Lab ----------------------------------
+
+https://judge.softuni.bg/Contests/Practice/Index/1832#0
+
+
+                01. Count Same Values
+
+numbers = [float(ele) for ele in input().split()]
+unique = []
+
+for ele in numbers:
+    if ele not in unique:
+        unique.append(ele)
+
+result = {el:0 for el in unique}
+
+for ele in numbers:
+    if ele in result.keys():
+        result[ele]+=1
+
+for key, value in result.items():
+    print(f"{key:.1f} - {value} times")
+
+
+
+
+                # 02. Average Student Grades
+
+n = int(input())
+students = {}
+
+for i in range(n):
+    student, grade = input().split()
+    grade = float(grade)
+    if student in students.keys():
+        students[student].append(grade)
+    else:
+        students[student] = [grade]
+
+def Average(ll):
+    return sum(ll) / len(ll)
+
+def String(ll):
+    return " ".join(map(lambda x: str(f"{x:.2f}"), ll)).rstrip()
+
+for key, value in students.items():
+    print(f"{key} -> {String(value)} (avg: {Average(value):.2f})")
+
+
+
+
+                # 03. Record Unique Names
+
+n = int(input())
+output = set()
+
+for i in range(n):
+    name = input()
+    output.add(name)
+
+for ele in output:
+    print(ele)
+
+
+
+
+                # 04. Parking Lot
+
+n = int(input())
+lot = set()
+
+for i in range(n):
+    data = input()
+    command, plate = data.split()
+    if "IN" in command:
+        lot.add(plate)
+    elif "OUT" in command:
+        try:
+            lot.remove(plate)
+        except:
+            KeyError
+
+if len(lot) == 0:
+    print(f"Parking Lot is Empty")
+else:
+    for ele in lot:
+        print(ele)
+
+
+
+                05. SoftUni Party
+import re
+n = int(input())
+pattern_vip = r"^\d.+"
+pattern_reg = r"^\D.+"
+reservations = set()
+
+for i in range(n):
+    data = input()
+    reservations.add(data)
+
+v = re.compile(pattern_vip)
+r = re.compile(pattern_reg)
+vip_res = set(filter(v.match, reservations))
+reg_res = set(filter(r.match, reservations))
+
+while True:
+    data = input()
+    if data == "END":
+        break
+    else:
+        if data in vip_res:
+            vip_res.remove(data)
+        elif data in reg_res:
+            reg_res.remove(data)
+
+print(f"{len(vip_res)+len(reg_res)}")
+for ele in sorted(vip_res):
+    print(ele)
+for ele in sorted(reg_res):
+    print(ele)
+CODE WORKS, TOO SLOW
+
+n = int(input())
+vip_res = set()
+reg_res = set()
+
+for i in range(n):
+    data = input()
+    if data[0].isnumeric():
+        vip_res.add(data)
+    else:
+        reg_res.add(data)
+
+while True:
+    data = input()
+    if data == "END":
+        break
+    else:
+        if data in vip_res:
+            vip_res.remove(data)
+        elif data in reg_res:
+            reg_res.remove(data)
+
+print(f"{len(vip_res)+len(reg_res)}")
+for ele in sorted(vip_res):
+    print(ele)
+for ele in sorted(reg_res):
+    print(ele)
+
+THIS CODE IS FAST ENOUGH
